@@ -25,7 +25,6 @@ const UpcomingEvents = () => {
 
     const [isLoading, setIsLoading] = useState(false)
 
-    const accessToken = localStorage.getItem("access_token");
 
     // const { data, isLoading: eventsLoading, error} = useList({
         
@@ -56,80 +55,87 @@ const UpcomingEvents = () => {
 
 
 
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    
+    
+    // useEffect(() => {
+    //     const fetchData = async () => {
+           
 
+    //         try {
+    //             const variables = {
+    //                 filter: {},
+    //                 sorting: [{ field: "startDate", direction: "ASC" }],
+    // paging: { offset: 0, limit: 10 },
+    //             };
+
+    //             const response = await client.request(DASHBOARD_CALENDAR_UPCOMING_EVENTS_QUERY, variables);
+    //             console.log('Fetched events:', response.events.nodes);
+
+    //         } catch (err) {
+    //             console.log(err);
+                
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, []); 
+
+    // console.log(data);
+
+
+
+
+
+
+    // const [data, setData] = useState(null);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(null);
+
+
+
+
+    const { data, isLoading: eventsLoading } = useList({
+        resource: "events",
+        pagination: {
+            pageSize: 5
+          },
+          sorters: [{ field: "startDate", order: "asc" }],
+         
+
+        meta: {
+            gqlQuery: DASHBOARD_CALENDAR_UPCOMING_EVENTS_QUERY,
+            variables: {
+                filters: [
+                    {
+                      field: "startDate",
+                      operator: "gte",
+                      value: dayjs().format("YYYY-MM-DD"),
+                    },
+                  ],
+                paging: { offset: 0, limit: 10 },
+                
+            },
+        },
+    });
     
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            setError(null);
 
-            try {
-                const variables = {
-                    filter: {},
-                    sorting: [{ field: "startDate", direction: "ASC" }],
-    paging: { offset: 0, limit: 10 },
-                };
+        setIsLoading(eventsLoading);
 
-                const response = await client.request(DASHBOARD_CALENDAR_UPCOMING_EVENTS_QUERY, variables);
-                setData(response.events.nodes); // Adjust based on the actual response structure
-                console.log('Fetched events:', response.events.nodes);
-
-            } catch (err) {
-                setError(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []); // Empty dependency array to ensure it only runs once
-
-    console.log(data);
-    
+        if (!eventsLoading) {
+            console.log("Fetched shahzaib data:", data);
+            // Perform any additional logic with `data` here if necessary
+        }
+    }, [data, eventsLoading]);
 
 
 
 
-    // const { data, isLoading: eventsLoading, error } = useList({
-    //     resource: "events",
-    //     meta: {
-    //         gqlQuery: DASHBOARD_CALENDAR_UPCOMING_EVENTS_QUERY,
-    //     },
-    //     filters: [
-    //         {
-    //             field: "startDate",
-    //             operator: "gte",
-    //             value: new Date().toISOString(), 
-    //         }
-    //     ],
-    //     sorters: [
-    //         {
-    //             field: "startDate",
-    //             order: "asc"
-    //         }
-    //     ],
-    //     pagination: {
-    //         pageSize: 5,
-    //         current: 1
-    //     },
-    //     queryOptions: {
-    //         // Add this to see detailed errors
-    //         onError: (error) => {
-    //             console.log('GraphQL Error:', error);
-    //         }
-    //     }
-    // })
 
 
-    // Add this to debug
-    // console.log('Query:', DASHBOARD_CALENDAR_UPCOMING_EVENTS_QUERY);
-    // console.log('Error:', error);
-    // console.log('data', data);
-    
-    
+
+
+
 
     return ( 
 
@@ -172,7 +178,7 @@ const UpcomingEvents = () => {
             itemLayout="horizontal" 
 
             // actual data will come
-            dataSource={[]}
+            dataSource={data?.data || []}
             renderItem={(item)=>{
 
                 const renderDate = () => {

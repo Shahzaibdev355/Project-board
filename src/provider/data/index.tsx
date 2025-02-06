@@ -17,27 +17,37 @@ export const API_URL = `${API_BASE_URL}/graphql`
 export const WSS_URL = "wss://api.crm.refine.dev/graphql";
 
 
-// export const client = new GraphQLClient(API_URL,{
-//     fetch : ( url:string, options:RequestInit) =>{
-//         try {
-//             return fetchWrapper(url,options)
-//         } catch (error) {
-//             return Promise.reject(error as Error)
-//         }
-//     }
-// })
+export const client = new GraphQLClient(API_URL,{
 
+    
 
-export const client = new GraphQLClient(API_URL, {
-    fetch: (url: string, options: RequestInit) => {
+    fetch : ( url:string, options:RequestInit) =>{
+
         const accessToken = localStorage.getItem("access_token");
-        options.headers = {
-            ...options.headers,
-            Authorization: `Bearer ${accessToken}`,
-        };
-        return fetchWrapper(url, options);
-    },
-});
+
+        try {
+            options.headers = {
+                 ...options.headers,
+                 Authorization: `Bearer ${accessToken}`,
+            };
+            return fetchWrapper(url,options)
+        } catch (error) {
+            return Promise.reject(error as Error)
+        }
+    }
+})
+
+
+// export const client = new GraphQLClient(API_URL, {
+//     fetch: (url: string, options: RequestInit) => {
+//         const accessToken = localStorage.getItem("access_token");
+//         options.headers = {
+//             ...options.headers,
+//             Authorization: `Bearer ${accessToken}`,
+//         };
+//         return fetchWrapper(url, options);
+//     },
+// });
 
 
 export const wsClient = typeof window !== "undefined" ? 
