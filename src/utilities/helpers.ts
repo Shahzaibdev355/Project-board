@@ -68,3 +68,5 @@ export const mapDealsData = (
   // Combine the won and lost deals and sort them by time
   return [...wonDeals, ...lostDeals].sort((a, b) => a.timeUnix - b.timeUnix);
 };
+
+

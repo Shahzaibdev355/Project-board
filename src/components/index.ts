@@ -11,4 +11,6 @@ import LatestActivitiesSkeleton
 
  import KanbanColumnSkeleton from "@/skeleton/kanban";
 
-export {UpcomingEvents, DealsChart, UpcomingEventsSkeleton, LatestActivitiesSkeleton, AccordionHeaderSkeleton, ProjectCardSkeleton, KanbanColumnSkeleton}
+ import DashboardTotalCountCard from "./home/total-count-card";
+
+export {UpcomingEvents, DealsChart, UpcomingEventsSkeleton, LatestActivitiesSkeleton, AccordionHeaderSkeleton, ProjectCardSkeleton, KanbanColumnSkeleton, DashboardTotalCountCard}

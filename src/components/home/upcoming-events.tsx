@@ -1,5 +1,5 @@
 import { CalendarOutlined } from "@ant-design/icons"
-import { Badge, Card, List } from "antd"
+import { Badge, Card, List, Pagination } from "antd"
 import { Text } from "../text"
 import { useEffect, useState } from "react"
 import UpcomingEventsSkeleton from "@/skeleton/upcoming-events"
@@ -92,12 +92,18 @@ const UpcomingEvents = () => {
     // const [error, setError] = useState(null);
 
 
+    const [currentPage, setCurrentPage] = useState(1); // State for current page
+    const pageSize = 5; // Number of items per page
+    const maxPages = 3; // Limit to 3 pages
+    const totalItems = pageSize * maxPages; // Maximum items to fetch (3 pages)
+
 
 
     const { data, isLoading: eventsLoading } = useList({
         resource: "events",
         pagination: {
-            pageSize: 5
+            pageSize,
+            current: currentPage,
           },
           sorters: [{ field: "startDate", order: "asc" }],
          
@@ -112,7 +118,8 @@ const UpcomingEvents = () => {
                       value: dayjs().format("YYYY-MM-DD"),
                     },
                   ],
-                paging: { offset: 0, limit: 10 },
+                // paging: { offset: 0, limit: 10 },
+                paging: { offset: (currentPage - 1) * pageSize, limit: pageSize },
                 
             },
         },
@@ -120,13 +127,18 @@ const UpcomingEvents = () => {
     
     useEffect(() => {
 
-        setIsLoading(eventsLoading);
+        // setIsLoading(eventsLoading);
 
         if (!eventsLoading) {
             console.log("Fetched shahzaib data:", data);
             // Perform any additional logic with `data` here if necessary
         }
     }, [data, eventsLoading]);
+
+
+    const onPageChange = (page) => {
+        setCurrentPage(page); // Update current page
+    };
 
 
 
@@ -164,7 +176,7 @@ const UpcomingEvents = () => {
        >
 
 
-        {isLoading ? (
+        {eventsLoading ? (
             <List  itemLayout="horizontal"
             dataSource={Array.from({ length: 5 }).map((_, index) => ({
               id: index,
@@ -174,6 +186,7 @@ const UpcomingEvents = () => {
             />
 
         ): (
+            <>
             <List 
             itemLayout="horizontal" 
 
@@ -208,7 +221,19 @@ const UpcomingEvents = () => {
             >
 
             </List>
-        )}
+
+            
+
+            <Pagination
+            current={currentPage}
+            pageSize={pageSize}
+            total={totalItems} // Total items limited to 3 pages
+            onChange={onPageChange}
+            style={{ marginTop: "10px", textAlign: "center", justifyContent: 'center' }}
+          />
+
+            </>
+                    )}
 
        </Card> 
 
