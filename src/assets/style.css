@@ -2,3 +2,36 @@
 .ant-popover{
     z-index: 999!important;
 }
+
+
+
+/* Chrome, Safari, and Edge */
+::-webkit-scrollbar {
+    width: 10px;
+    /* Width of the scrollbar */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    /* Make the track transparent */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #1677FF;
+    border-radius: 10px;
+    border: none;
+  }
+  
+  /* Firefox */
+  @-moz-document url-prefix() {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #1677FF transparent;
+  
+    }
+  
+    *::-moz-scrollbar-thumb {
+      border-radius: 10px;
+      /* Add border-radius here */
+    }
+  }

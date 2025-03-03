@@ -15,6 +15,7 @@
     "@refinedev/react-router": "^1.0.0",
     "antd": "^5.17.0",
     "dayjs": "^1.11.13",
+    "finnhub": "^1.2.19",
     "graphql-tag": "^2.12.6",
     "graphql-ws": "^5.9.1",
     "prettier": "^3.4.2",

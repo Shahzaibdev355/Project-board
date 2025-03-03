@@ -69,7 +69,7 @@ const CurrentUser = () => {
                 <CustomAvatar  
                 name={user?.name}
                 src={user?.avatarUrl}
-                size="default"
+                size="large"
                 style={{cursor: "pointer"}}
                 />
         </Popover>
